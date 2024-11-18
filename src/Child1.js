@@ -47,7 +47,7 @@ class Child1 extends Component {
     // console.log(y_Scale);
     // data.map((item) => console.log(item.Low));
 
-    // CLOSE LINE
+    // CLOSE LINE //
     var lineGeneratorClose = d3
       .line()
       .x((d) => x_Scale(d.Date))
@@ -63,8 +63,28 @@ class Child1 extends Component {
       .attr("cx", (d) => x_Scale(d.Date)) // X position based on Date
       .attr("cy", (d) => y_Scale(d.Close)) // Y position based on High value
       .attr("r", 4) // Radius of the circle
-      .attr("fill", "red");
-    // LINE
+      .attr("fill", "red")
+      .on("mouseover", function (event, d) {
+        // Create the label when the mouse hovers over the circle
+        svg
+          .append("text")
+          .attr("class", "open-label")
+          .attr("x", x_Scale(d.Date)) // X position based on Date
+          .attr("y", y_Scale(d.Close) - 10) // Slightly above the circle
+          .text(d.Open) // Display the Open value
+          .attr("font-size", "14px")
+          .attr("fill", "red");
+        d3.select(event.target).attr("r", 8); // Increase circle radius
+        d3.select(this).style("cursor", "pointer");
+      })
+      .on("mouseout", function (event, d) {
+        // Remove the label when the mouse leaves the circle
+        svg.selectAll(".open-label").remove();
+        d3.select(event.target).attr("r", 4); // Increase circle radius
+        d3.select(this).style("cursor", "default");
+      });
+
+    //  LINE
     svg
       .selectAll(".close-line")
       .data([pathDataClose])
@@ -72,19 +92,10 @@ class Child1 extends Component {
       .attr("d", (myd) => myd)
       .attr("fill", "none")
       .attr("stroke", "red");
-    // LABEL
-    svg
-      .selectAll(".close-label")
-      .data(data)
-      .join("text")
-      .attr("class", "close-label")
-      .attr("x", (d) => x_Scale(d.Date))
-      .attr("y", (d) => y_Scale(d.Close) - 10) // Slightly above the circle
-      .text((d) => d.Close)
-      .attr("font-size", "10px")
-      .attr("fill", "red");
 
-    // OPEN LINE
+    ////////////////////////////////
+
+    // OPEN LINE //
     var lineGeneratorOpen = d3
       .line()
       .x((d) => x_Scale(d.Date))
@@ -101,7 +112,27 @@ class Child1 extends Component {
       .attr("cx", (d) => x_Scale(d.Date)) // X position based on Date
       .attr("cy", (d) => y_Scale(d.Open)) // Y position based on High value
       .attr("r", 4) // Radius of the circle
-      .attr("fill", "green");
+      .attr("fill", "green")
+      .on("mouseover", function (event, d) {
+        // Create the label when the mouse hovers over the circle
+        svg
+          .append("text")
+          .attr("class", "open-label")
+          .attr("x", x_Scale(d.Date)) // X position based on Date
+          .attr("y", y_Scale(d.Open) - 10) // Slightly above the circle
+          .text(d.Open) // Display the Open value
+          .attr("font-size", "14px")
+          .attr("fill", "green");
+        d3.select(event.target).attr("r", 8); // Increase circle radius
+        d3.select(this).style("cursor", "pointer");
+      })
+      .on("mouseout", function (event, d) {
+        // Remove the label when the mouse leaves the circle
+        svg.selectAll(".open-label").remove();
+        d3.select(event.target).attr("r", 4); // Increase circle radius
+        d3.select(this).style("cursor", "default");
+      });
+
     // LINE
     svg
       .selectAll(".open-line")
@@ -110,17 +141,10 @@ class Child1 extends Component {
       .attr("d", (myd) => myd)
       .attr("fill", "none")
       .attr("stroke", "green");
-    // LABEL
-    svg
-      .selectAll(".open-label")
-      .data(data)
-      .join("text")
-      .attr("class", "open-label")
-      .attr("x", (d) => x_Scale(d.Date))
-      .attr("y", (d) => y_Scale(d.Open) - 10) // Slightly above the circle
-      .text((d) => d.Open)
-      .attr("font-size", "10px")
-      .attr("fill", "green");
+
+    //////////////////////////////////////
+
+    // AXIS
 
     // Add the X axis using join
     svg
