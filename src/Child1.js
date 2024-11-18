@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import * as d3 from "d3";
-
 class Child1 extends Component {
   state = {
     company: "Apple", // Default Company
@@ -20,13 +19,15 @@ class Child1 extends Component {
   renderChart = () => {
     const data = this.props.csv_data;
     console.log(data);
+    // this is used to format date in text
+    const formatDate = d3.timeFormat("%Y-%m-%d");
 
     // Set the dimensions of the chart
     const margin = { top: 20, right: 30, bottom: 40, left: 40 },
-      width = 500,
-      height = 300,
-      innerWidth = 500 - margin.left - margin.right,
-      innerHeight = 300 - margin.top - margin.bottom;
+      width = 700,
+      height = 400,
+      innerWidth = 600 - margin.left - margin.right,
+      innerHeight = 400 - margin.top - margin.bottom;
 
     const svg = d3
       .select("#mychart")
@@ -65,21 +66,46 @@ class Child1 extends Component {
       .attr("r", 4) // Radius of the circle
       .attr("fill", "red")
       .on("mouseover", function (event, d) {
+        svg
+          .append("rect")
+          .attr("class", "label-background")
+          .attr("x", x_Scale(d.Date) + 15)
+          .attr("y", y_Scale(d.Open) - 25)
+          .attr("width", 100)
+          .attr("height", 60)
+          .attr("fill", "white")
+          .attr("stroke", "black")
+          .attr("stroke-width", 1);
+
         // Create the label when the mouse hovers over the circle
         svg
           .append("text")
-          .attr("class", "open-label")
-          .attr("x", x_Scale(d.Date)) // X position based on Date
-          .attr("y", y_Scale(d.Close) - 10) // Slightly above the circle
-          .text(d.Open) // Display the Open value
-          .attr("font-size", "14px")
-          .attr("fill", "red");
+          .attr("class", "label")
+          .attr("x", x_Scale(d.Date) + 20) // X position based on Date
+          .attr("y", y_Scale(d.Open) - 10) // Slightly above the circle
+          .attr("font-size", "10px")
+          .attr("fill", "black")
+          .text("Date: " + formatDate(d.Date))
+          .append("tspan")
+          .attr("x", x_Scale(d.Date) + 20)
+          .attr("dy", "1.2em")
+          .text("Open: " + d.Open)
+          .append("tspan")
+          .attr("x", x_Scale(d.Date) + 20)
+          .attr("dy", "1.2em")
+          .text("Close: " + d.Close)
+          .append("tspan")
+          .attr("x", x_Scale(d.Date) + 20)
+          .attr("dy", "1.2em")
+          .text("Difference: " + (d.Close - d.Open).toFixed(2));
         d3.select(event.target).attr("r", 8); // Increase circle radius
         d3.select(this).style("cursor", "pointer");
       })
       .on("mouseout", function (event, d) {
         // Remove the label when the mouse leaves the circle
-        svg.selectAll(".open-label").remove();
+        svg.selectAll(".label-background").remove();
+
+        svg.selectAll(".label").remove();
         d3.select(event.target).attr("r", 4); // Increase circle radius
         d3.select(this).style("cursor", "default");
       });
@@ -114,21 +140,46 @@ class Child1 extends Component {
       .attr("r", 4) // Radius of the circle
       .attr("fill", "green")
       .on("mouseover", function (event, d) {
+        svg
+          .append("rect")
+          .attr("class", "label-background")
+          .attr("x", x_Scale(d.Date) + 15)
+          .attr("y", y_Scale(d.Open) - 25)
+          .attr("width", 100)
+          .attr("height", 60)
+          .attr("fill", "white")
+          .attr("stroke", "black")
+          .attr("stroke-width", 1);
         // Create the label when the mouse hovers over the circle
         svg
           .append("text")
-          .attr("class", "open-label")
-          .attr("x", x_Scale(d.Date)) // X position based on Date
+          .attr("class", "label")
+          .attr("x", x_Scale(d.Date) + 20) // X position based on Date
           .attr("y", y_Scale(d.Open) - 10) // Slightly above the circle
-          .text(d.Open) // Display the Open value
-          .attr("font-size", "14px")
-          .attr("fill", "green");
+          .attr("font-size", "10px")
+          .attr("fill", "black")
+          .text("Date: " + formatDate(d.Date))
+          .append("tspan")
+          .attr("x", x_Scale(d.Date) + 20)
+          .attr("dy", "1.2em")
+          .text("Open: " + d.Open)
+          .append("tspan")
+          .attr("x", x_Scale(d.Date) + 20)
+          .attr("dy", "1.2em")
+          .text("Close: " + d.Close)
+          .append("tspan")
+          .attr("x", x_Scale(d.Date) + 20)
+          .attr("dy", "1.2em")
+          .text("Difference: " + (d.Close - d.Open).toFixed(2));
+
         d3.select(event.target).attr("r", 8); // Increase circle radius
         d3.select(this).style("cursor", "pointer");
       })
       .on("mouseout", function (event, d) {
         // Remove the label when the mouse leaves the circle
-        svg.selectAll(".open-label").remove();
+        svg.selectAll(".label-background").remove();
+
+        svg.selectAll(".label").remove();
         d3.select(event.target).attr("r", 4); // Increase circle radius
         d3.select(this).style("cursor", "default");
       });
