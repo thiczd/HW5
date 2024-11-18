@@ -1,23 +1,68 @@
 import React, { Component } from "react";
 import * as d3 from "d3";
+import "./Child1.css";
 class Child1 extends Component {
   state = {
     company: "Apple", // Default Company
     selectedMonth: "November", //Default Month
   };
+  set_company = (company_name) => {
+    this.setState({ company: company_name });
+    console.log("succesfully changed company state");
+  };
+  set_month = (month) => {
+    this.setState({ selectedMonth: month });
+  };
 
   componentDidMount() {
     // console.log(this.props.csv_data); // Use this data as default. When the user will upload data this props will provide you the updated data
+
     this.renderChart();
   }
 
   componentDidUpdate() {
     // console.log(this.props.csv_data);
+    this.destroyChart();
+
     this.renderChart();
   }
 
+  destroyChart = () => {
+    // Completely clear the SVG by removing all child elements
+    d3.select("#mychart").selectAll("*").remove();
+
+    // Optionally reset the <g> element for consistent structure
+    d3.select("#mychart").append("g");
+  };
+
   renderChart = () => {
-    const data = this.props.csv_data;
+    // Array of month names to convert string month to number (0 = January, 11 = December)
+    const monthNames = [
+      "January",
+      "February",
+      "March",
+      "April",
+      "May",
+      "June",
+      "July",
+      "August",
+      "September",
+      "October",
+      "November",
+      "December",
+    ];
+
+    // Get the company and selectedMonth from the state
+    const { company, selectedMonth } = this.state;
+
+    // Filtering data based on matching Company and Month (with string month as input)
+    const data = this.props.csv_data.filter((item) => {
+      const itemMonth = new Date(item.Date).getMonth(); // Extract month from Date object
+      const targetMonth = monthNames.indexOf(selectedMonth); // Convert string month to index
+
+      return item.Company === company && itemMonth === targetMonth;
+    });
+
     console.log(data);
     // this is used to format date in text
     const formatDate = d3.timeFormat("%Y-%m-%d");
@@ -64,7 +109,7 @@ class Child1 extends Component {
       .attr("cx", (d) => x_Scale(d.Date)) // X position based on Date
       .attr("cy", (d) => y_Scale(d.Close)) // Y position based on High value
       .attr("r", 4) // Radius of the circle
-      .attr("fill", "red")
+      .attr("fill", "#e41a1c")
       .on("mouseover", function (event, d) {
         svg
           .append("rect")
@@ -114,10 +159,12 @@ class Child1 extends Component {
     svg
       .selectAll(".close-line")
       .data([pathDataClose])
+      .attr("class", "close-line")
+
       .join("path")
       .attr("d", (myd) => myd)
       .attr("fill", "none")
-      .attr("stroke", "red");
+      .attr("stroke", "#e41a1c");
 
     ////////////////////////////////
 
@@ -138,7 +185,7 @@ class Child1 extends Component {
       .attr("cx", (d) => x_Scale(d.Date)) // X position based on Date
       .attr("cy", (d) => y_Scale(d.Open)) // Y position based on High value
       .attr("r", 4) // Radius of the circle
-      .attr("fill", "green")
+      .attr("fill", "#b2df8a")
       .on("mouseover", function (event, d) {
         svg
           .append("rect")
@@ -187,11 +234,12 @@ class Child1 extends Component {
     // LINE
     svg
       .selectAll(".open-line")
+      .attr("class", "open-line")
       .data([pathDataOpen])
       .join("path")
       .attr("d", (myd) => myd)
       .attr("fill", "none")
-      .attr("stroke", "green");
+      .attr("stroke", "#b2df8a");
 
     //////////////////////////////////////
 
@@ -234,6 +282,66 @@ class Child1 extends Component {
 
     return (
       <div className="child1">
+        <div className="radio-buttons">
+          <label>Company</label>
+          <form className="company">
+            <div className="radio">
+              <label>
+                <input
+                  type="radio"
+                  value="Apple"
+                  checked={this.state.company === "Apple"}
+                  onChange={() => this.set_company("Apple")}
+                />
+                Apple
+              </label>
+            </div>
+            <div className="radio">
+              <label>
+                <input
+                  type="radio"
+                  value="Microsoft"
+                  checked={this.state.company === "Microsoft"}
+                  onChange={() => this.set_company("Microsoft")}
+                />
+                Microsoft
+              </label>
+            </div>
+            <div className="radio">
+              <label>
+                <input
+                  type="radio"
+                  value="Amazon"
+                  checked={this.state.company === "Amazon"}
+                  onChange={() => this.set_company("Amazon")}
+                />
+                Amazon{" "}
+              </label>
+            </div>
+            <div className="radio">
+              <label>
+                <input
+                  type="radio"
+                  value="Google"
+                  checked={this.state.company === "Google"}
+                  onChange={() => this.set_company("Google")}
+                />
+                Google{" "}
+              </label>
+            </div>
+            <div className="radio">
+              <label>
+                <input
+                  type="radio"
+                  value="Meta"
+                  checked={this.state.company === "Meta"}
+                  onChange={() => this.set_company("Meta")}
+                />
+                Meta{" "}
+              </label>
+            </div>
+          </form>
+        </div>
         <svg id="mychart" width="700" height="400">
           <g></g>
         </svg>
