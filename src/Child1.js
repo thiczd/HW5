@@ -4,7 +4,7 @@ import "./Child1.css";
 class Child1 extends Component {
   state = {
     company: "Apple", // Default Company
-    selectedMonth: "November", //Default Month
+    selectedMonth: "December", //Default Month
   };
   set_company = (company_name) => {
     this.setState({ company: company_name });
@@ -30,13 +30,11 @@ class Child1 extends Component {
   destroyChart = () => {
     // Completely clear the SVG by removing all child elements
     d3.select("#mychart").selectAll("*").remove();
-
     // Optionally reset the <g> element for consistent structure
     d3.select("#mychart").append("g");
   };
 
   renderChart = () => {
-    // Array of month names to convert string month to number (0 = January, 11 = December)
     const monthNames = [
       "January",
       "February",
@@ -52,13 +50,11 @@ class Child1 extends Component {
       "December",
     ];
 
-    // Get the company and selectedMonth from the state
     const { company, selectedMonth } = this.state;
 
-    // Filtering data based on matching Company and Month (with string month as input)
     const data = this.props.csv_data.filter((item) => {
-      const itemMonth = new Date(item.Date).getMonth(); // Extract month from Date object
-      const targetMonth = monthNames.indexOf(selectedMonth); // Convert string month to index
+      const itemMonth = new Date(item.Date).getMonth(); // Extract month from Date object this is an INT
+      const targetMonth = monthNames.indexOf(selectedMonth); // Convert string month to index INT
 
       return item.Company === company && itemMonth === targetMonth;
     });
@@ -134,11 +130,11 @@ class Child1 extends Component {
           .append("tspan")
           .attr("x", x_Scale(d.Date) + 20)
           .attr("dy", "1.2em")
-          .text("Open: " + d.Open)
+          .text("Open: " + d.Open.toFixed(2))
           .append("tspan")
           .attr("x", x_Scale(d.Date) + 20)
           .attr("dy", "1.2em")
-          .text("Close: " + d.Close)
+          .text("Close: " + d.Close.toFixed(2))
           .append("tspan")
           .attr("x", x_Scale(d.Date) + 20)
           .attr("dy", "1.2em")
@@ -209,11 +205,11 @@ class Child1 extends Component {
           .append("tspan")
           .attr("x", x_Scale(d.Date) + 20)
           .attr("dy", "1.2em")
-          .text("Open: " + d.Open)
+          .text("Open: " + d.Open.toFixed(2))
           .append("tspan")
           .attr("x", x_Scale(d.Date) + 20)
           .attr("dy", "1.2em")
-          .text("Close: " + d.Close)
+          .text("Close: " + d.Close.toFixed(2))
           .append("tspan")
           .attr("x", x_Scale(d.Date) + 20)
           .attr("dy", "1.2em")
