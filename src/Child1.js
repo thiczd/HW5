@@ -281,61 +281,19 @@ class Child1 extends Component {
         <div className="radio-buttons">
           <label>Company</label>
           <form className="company">
-            <div className="radio">
-              <label>
-                <input
-                  type="radio"
-                  value="Apple"
-                  checked={this.state.company === "Apple"}
-                  onChange={() => this.set_company("Apple")}
-                />
-                Apple
-              </label>
-            </div>
-            <div className="radio">
-              <label>
-                <input
-                  type="radio"
-                  value="Microsoft"
-                  checked={this.state.company === "Microsoft"}
-                  onChange={() => this.set_company("Microsoft")}
-                />
-                Microsoft
-              </label>
-            </div>
-            <div className="radio">
-              <label>
-                <input
-                  type="radio"
-                  value="Amazon"
-                  checked={this.state.company === "Amazon"}
-                  onChange={() => this.set_company("Amazon")}
-                />
-                Amazon{" "}
-              </label>
-            </div>
-            <div className="radio">
-              <label>
-                <input
-                  type="radio"
-                  value="Google"
-                  checked={this.state.company === "Google"}
-                  onChange={() => this.set_company("Google")}
-                />
-                Google{" "}
-              </label>
-            </div>
-            <div className="radio">
-              <label>
-                <input
-                  type="radio"
-                  value="Meta"
-                  checked={this.state.company === "Meta"}
-                  onChange={() => this.set_company("Meta")}
-                />
-                Meta{" "}
-              </label>
-            </div>
+            {options.map((company) => (
+              <div key={company} className="radio">
+                <label>
+                  <input
+                    type="radio"
+                    value={company}
+                    checked={this.state.company === company}
+                    onChange={() => this.set_company(company)}
+                  />
+                  {company}
+                </label>
+              </div>
+            ))}
           </form>
         </div>
         <svg id="mychart" width="700" height="400">
