@@ -4,14 +4,14 @@ import "./Child1.css";
 class Child1 extends Component {
   state = {
     company: "Apple", // Default Company
-    selectedMonth: "December", //Default Month
+    selectedMonth: "November", //Default Month
   };
   set_company = (company_name) => {
     this.setState({ company: company_name });
     console.log("succesfully changed company state");
   };
-  set_month = (month) => {
-    this.setState({ selectedMonth: month });
+  set_month = (event) => {
+    this.setState({ selectedMonth: event.target.value });
   };
 
   componentDidMount() {
@@ -296,6 +296,21 @@ class Child1 extends Component {
             ))}
           </form>
         </div>
+
+        <div className="dropdown-menu">
+          <label>
+            Months:
+            <select
+              value="November"
+              onChange={(event) => this.set_month(event)}
+            >
+              {months.map((month) => (
+                <option value={month}>{month}</option>
+              ))}
+            </select>
+          </label>
+        </div>
+
         <svg id="mychart" width="700" height="400">
           <g></g>
         </svg>
