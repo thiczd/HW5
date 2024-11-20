@@ -257,6 +257,30 @@ class Child1 extends Component {
       .join("g")
       .attr("class", "y axis")
       .call(d3.axisLeft(y_Scale));
+
+    const legend = svg
+      .selectAll(".legend")
+      .data(["Close", "Open"]) // Labels for legend
+      .join("g")
+      .attr("class", "legend")
+      .attr("transform", (d, i) => `translate(${innerWidth - 100}, ${i * 20})`);
+
+    // Add color squares for legend
+    legend
+      .append("rect")
+      .attr("x", 0)
+      .attr("y", 0)
+      .attr("width", 12)
+      .attr("height", 12)
+      .attr("fill", (d) => (d === "Close" ? "#e41a1c" : "#b2df8a"));
+
+    // Add labels for legend
+    legend
+      .append("text")
+      .attr("x", 18)
+      .attr("y", 10)
+      .attr("font-size", "12px")
+      .text((d) => d);
   };
 
   render() {
@@ -310,10 +334,11 @@ class Child1 extends Component {
             </select>
           </label>
         </div>
-
-        <svg id="mychart" width="700" height="400">
-          <g></g>
-        </svg>
+        <div className="mychart">
+          <svg id="mychart" width="700" height="400">
+            <g></g>
+          </svg>
+        </div>
       </div>
     );
   }
