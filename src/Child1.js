@@ -301,7 +301,7 @@ class Child1 extends Component {
           <label>
             Months:
             <select
-              value="November"
+              value={this.state.selectedMonth}
               onChange={(event) => this.set_month(event)}
             >
               {months.map((month) => (

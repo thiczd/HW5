@@ -1,7 +1,13 @@
 .radio-buttons {
   display: flex;
+  justify-content: center;
   margin-left: 12px;
 }
 .company {
   display: flex;
+}
+
+.dropdown-menu {
+  display: flex;
+  justify-content: center;
 }
